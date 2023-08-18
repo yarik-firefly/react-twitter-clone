@@ -1,23 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import { useDispatch, useSelector } from "react-redux";
+import SignIn from "./pages/SignIn";
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
 
 function App() {
+  const { open } = useSelector((state) => state.modalSlice);
+  const dispatch = useDispatch();
+  // const clickOnBody = () => {
+  //   dispatch(setOpen(false));
+  // };
+  // document.body.addEventListener("click", clickOnBody);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Routes>
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/" element={<Home />} />
+      </Routes>
     </div>
   );
 }
