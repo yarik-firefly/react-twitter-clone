@@ -8,7 +8,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { setOpen } from "../../redux/slices/modalSlice";
 import { Button, TextField, Typography } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
     alignItems: "center",

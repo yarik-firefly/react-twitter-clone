@@ -1,6 +1,6 @@
 import React from "react";
 import { useHomeStyles } from "../pages/Home";
-import { Button, IconButton, Typography } from "@material-ui/core";
+import { Button, Hidden, IconButton, Typography } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
@@ -10,9 +10,23 @@ import PeopleOutlineIcon from "@material-ui/icons/PeopleOutline";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import PersonIcon from "@material-ui/icons/Person";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import ButtonTweet from "./ButtonTweet";
+import Modal from "@material-ui/core/Modal";
+import Backdrop from "@material-ui/core/Backdrop";
+import Fade from "@material-ui/core/Fade";
+import CreateTweet from "./Tweet/CreateTweet";
+import { useStyles } from "./Modal/ModalWindow";
+import { useDispatch, useSelector } from "react-redux";
+import { showModalTweet } from "../redux/slices/modalSlice";
+import { Link } from "react-router-dom";
 
 const SideMenu = () => {
+  const clickOnAddTweet = () => {};
+  // const [addTweet, setAddTweet] = React.useState(false);
+  const { showModal } = useSelector((state) => state.modalSlice);
+  const dispatch = useDispatch();
   const classes = useHomeStyles();
+  const classModal = useStyles();
   return (
     <>
       <svg
@@ -27,17 +41,24 @@ const SideMenu = () => {
         </g>
       </svg>
       <ul className={classes.list}>
-        <li>
-          <IconButton aria-label="delete" color="primary">
-            <HomeIcon />
-          </IconButton>
-          <Typography>Главная</Typography>
-        </li>
+        <Link style={{ color: "inherit", textDecoration: "none" }} to="/home">
+          <li>
+            <IconButton aria-label="delete" color="primary">
+              <HomeIcon />
+            </IconButton>
+            <Hidden xsDown>
+              <Typography>Главная</Typography>
+            </Hidden>
+          </li>
+        </Link>
+
         <li>
           <IconButton>
             <SearchIcon />
           </IconButton>
-          <Typography>Поиск</Typography>
+          <Hidden xsDown>
+            <Typography>Поиск</Typography>
+          </Hidden>
         </li>
         <li>
           <IconButton>
@@ -82,20 +103,28 @@ const SideMenu = () => {
           <Typography>Больше</Typography>
         </li>
       </ul>
-      <Button
-        variant="contained"
-        style={{
-          backgroundColor: "rgb(29,155,240)",
-          color: "white",
-          fontSize: 17,
-          fontWeight: 700,
-          width: 270,
-          height: 65,
-          borderRadius: 40,
-        }}
-      >
-        Твитнуть
-      </Button>
+      <ButtonTweet width="270" height="65" fontSize="17" sideBtn/>
+
+      <div>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          closeAfterTransition
+          onClose={() => dispatch(showModalTweet(false))}
+          open={showModal}
+          BackdropComponent={Backdrop}
+          className={classModal.modal}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={showModal} style={{ width: 550 }}>
+            <div>
+              <CreateTweet close />
+            </div>
+          </Fade>
+        </Modal>
+      </div>
     </>
   );
 };

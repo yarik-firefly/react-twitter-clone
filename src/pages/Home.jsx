@@ -7,10 +7,32 @@ import {
   InputBase,
   Paper,
   Button,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+  IconButton,
 } from "@material-ui/core";
+import SearchIcon from "@material-ui/icons/Search";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import Tweet from "../components/Tweet";
 import SideMenu from "../components/SideMenu";
+
+import CreateTweet from "../components/Tweet/CreateTweet";
+import { useDispatch, useSelector } from "react-redux";
+import { getNewsList, getTweets } from "../redux/slices/tweetsSlice";
+import NewsList from "../components/NewsList";
+import {
+  Outlet,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
+import FullTweet from "../components/FullTweet";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 export const useHomeStyles = makeStyles((theme) => ({
   wrapper: {},
@@ -43,7 +65,9 @@ export const useHomeStyles = makeStyles((theme) => ({
     border: "1px solid rgb(239,243,244)",
     backgroundColor: "rgb(239,243,244)",
     borderRadius: 30,
-    "&:focus": {
+    paddingLeft: 40,
+    position: "relative",
+    "&.Mui-focused": {
       border: "1px solid rgb(29,155,240)",
     },
   },
@@ -65,10 +89,60 @@ export const useHomeStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
   },
+  myTweet: {
+    display: "flex",
+    padding: "10px 24px",
+    "& input": {
+      paddingTop: 40,
+    },
+  },
+  rightBar: {
+    width: 350,
+    padding: "12px 16px",
+    backgroundColor: "rgb(247,249,249)",
+    borderRadius: 30,
+    marginTop: 15,
+  },
+  rightBarNews: {
+    width: 350,
+    backgroundColor: "rgb(247,249,249)",
+    borderRadius: 30,
+    marginTop: 15,
+  },
+  circleProgress: {
+    height: "inherit",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  errorText: {
+    fontSize: 20,
+    textAlign: "center",
+    marginTop: 30,
+    fontWeight: 700,
+  },
 }));
 
 const Home = () => {
   const classes = useHomeStyles();
+  const dispatch = useDispatch();
+  const { pathname } = useLocation();
+  const navigate = useNavigate()
+  const params = useParams();
+  const { tweets, news, statusTweets, statusNews } = useSelector(
+    (state) => state.tweetsSlice
+  );
+
+  const id = Object.values(params).toString();
+
+  React.useEffect(() => {
+    dispatch(getTweets());
+    dispatch(getNewsList());
+  }, []);
+
+  console.log(pathname);
+  console.log();
+
   return (
     <Container maxWidth="lg" style={{ height: "100vh" }}>
       <Grid container spacing={2}>
@@ -90,22 +164,118 @@ const Home = () => {
                 variant="h6"
                 style={{ fontWeight: 700, padding: "10px 15px" }}
               >
-                Главная
+                {pathname === `/home/${id}` ? (
+                  <div style={{display: 'flex', alignItems: 'center'}}>
+                    <IconButton onClick={() => navigate(-1)}>
+                      <ArrowBackIcon />
+                    </IconButton>
+                    <span style={{marginLeft: 10}}>Твитнуть</span>
+                  </div>
+                ) : pathname === "/home" ? (
+                  <>Главная</>
+                ) : null}
               </Typography>
-              <Button className={classes.button}>Для Вас</Button>
-              <Button className={classes.button}>Следующий</Button>
+              <Routes>
+                <Route
+                  index
+                  path=""
+                  element={
+                    <>
+                      <Button className={classes.button}>Для Вас</Button>
+                      <Button className={classes.button}>Следующий</Button>
+                    </>
+                  }
+                ></Route>
+              </Routes>
             </Paper>
-
-            <Tweet
-              username="serhiyprytula"
-              fullname="Serhiy Prytula"
-              avatarUrl="https://pbs.twimg.com/profile_images/1493217271048777729/Ha-OGOTY_400x400.jpg"
-              text="Погляньте, на що здатні ваші донати!Не важливо який їх розмір, важливо, що кожного місяця сотні тисяч переказів допомагають нам акумулювати кошти за які ми регулярно посилюємо сотні і стотні підрозділів Сил Оборони!"
-            />
+            <Routes>
+              <Route path="tweet/:id" element={<FullTweet />} />
+              <Route
+                path=""
+                element={
+                  <>
+                    <CreateTweet />
+                    {statusTweets === "SUCCESS" ? (
+                      tweets.map((tweet) => (
+                        <Tweet
+                          {...tweet}
+                        />
+                      ))
+                    ) : statusTweets === "LOADING" ? (
+                      <div className={classes.circleProgress}>
+                        <CircularProgress style={{ width: 70, height: 70 }} />
+                      </div>
+                    ) : statusTweets === "ERROR" ? (
+                      <div className={classes.errorText}>
+                        Не удалось отобразить твиты. Попробуйте зайти позже 😑
+                      </div>
+                    ) : null}
+                  </>
+                }
+              />
+            </Routes>
           </Paper>
         </Grid>
-        <Grid item xs={2}>
-          <InputBase className={classes.input} placeholder="Поиск" />
+        <Grid item xs={2} style={{ position: "relative", marginTop: 5 }}>
+          <SearchIcon
+            style={{ position: "absolute", zIndex: 10, top: 20, left: 19 }}
+          />
+          <InputBase className={classes.input} placeholder="Поиск"></InputBase>
+          <div className={classes.rightBar}>
+            <Typography
+              variant="h6"
+              style={{
+                fontSize: 20,
+                fontWeight: 800,
+                whiteSpace: "nowrap",
+                marginBottom: 10,
+              }}
+            >
+              Подписаться на Премиум
+            </Typography>
+            <Typography style={{ fontSize: 15, fontWeight: 700 }}>
+              Подпишитесь, чтобы разблокировать новые функции и, если вы
+              соответствуете требованиям, получать долю дохода от рекламы.
+            </Typography>
+            <Button
+              style={{
+                backgroundColor: "black",
+                color: "white",
+                fontSize: 15,
+                fontWeight: 700,
+                width: 130,
+                height: 40,
+                borderRadius: 30,
+                marginTop: 10,
+              }}
+            >
+              Подписаться
+            </Button>
+          </div>
+          <div className={classes.rightBarNews}>
+            <Typography
+              variant="h5"
+              style={{
+                fontSize: 20,
+                fontWeight: 800,
+                paddingTop: 15,
+                paddingLeft: 12,
+              }}
+            >
+              Тренды для вас
+            </Typography>
+            <List
+              component="nav"
+              className={classes.root}
+              aria-label="mailbox folders"
+            >
+              <Divider />
+
+              {news.map((item) => (
+                <NewsList {...item} />
+              ))}
+            </List>
+          </div>
         </Grid>
       </Grid>
     </Container>

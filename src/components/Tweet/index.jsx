@@ -13,68 +13,82 @@ import {
   Paper,
   Avatar,
 } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
-const Tweet = ({ text, fullname, username, avatarUrl }) => {
+const Tweet = ({ text, fullname, username, avatarUrl, id, none, date }) => {
   const classes = useHomeStyles();
   return (
-    <Paper
-      className={classes.tweet}
-      style={{ paddingTop: 15 }}
-      variant="outlined"
+    <Link
+      style={{
+        color: "inherit",
+        textDecoration: "none",
+        pointerEvents: none ? "none" : "auto",
+      }}
+      to={`/home/tweet/${id}`}
     >
-      <Container maxWidth="lg">
-        <Grid container spacing={3}>
-          <Grid item xs={1}>
-            <Avatar
-              style={{ width: 50, height: 50 }}
-              alt={`Аватар пользователя ${username}`}
-              src={avatarUrl}
-            />
+      <Paper
+        className={classes.tweet}
+        style={{ paddingTop: 15 }}
+        variant="outlined"
+      >
+        <Container maxWidth="lg">
+          <Grid container spacing={3}>
+            <Grid item xs={1}>
+              <Avatar
+                style={{ width: 50, height: 50 }}
+                alt={`Аватар пользователя ${username}`}
+                src={avatarUrl}
+              />
+            </Grid>
+            <Grid style={{ paddingLeft: 25 }} item xs={11}>
+              <Typography>
+                <b>{fullname}</b>
+                <span className={classes.tweetUserName}>@{username}</span>
+                <b> · </b>
+                <span>
+                  {date?.day}.
+                  0{date?.mounth + 1}.
+                  {date?.year}
+                </span>
+              </Typography>
+              <Typography>{text}</Typography>
+              <div className={classes.tweetIconsPost}>
+                <div>
+                  <IconButton color="primary">
+                    <MessageIcon />
+                  </IconButton>
+                  <span>1</span>
+                </div>
+                <div>
+                  <IconButton color="primary">
+                    <RepeatIcon />
+                  </IconButton>
+                  <span>1</span>
+                </div>
+                <div>
+                  <IconButton color="primary">
+                    <FavoriteIcon />
+                  </IconButton>
+                  <span>1</span>
+                </div>
+                <div>
+                  <IconButton color="primary">
+                    <EqualizerIcon />
+                  </IconButton>
+                  <span>1</span>
+                </div>
+                <div>
+                  <IconButton color="primary">
+                    <PublishIcon />
+                  </IconButton>
+                  <span>1</span>
+                </div>
+              </div>
+            </Grid>
           </Grid>
-          <Grid style={{ paddingLeft: 25 }} item xs={11}>
-            <Typography>
-              <b>{fullname}</b>
-              <span className={classes.tweetUserName}>@{username}</span>
-              <b> · </b>
-              <span>Aug 17</span>
-            </Typography>
-            <Typography>{text}</Typography>
-            <div className={classes.tweetIconsPost}>
-              <div>
-                <IconButton color="primary">
-                  <MessageIcon />
-                </IconButton>
-                <span>1</span>
-              </div>
-              <div>
-                <IconButton color="primary">
-                  <RepeatIcon />
-                </IconButton>
-                <span>1</span>
-              </div>
-              <div>
-                <IconButton color="primary">
-                  <FavoriteIcon />
-                </IconButton>
-                <span>1</span>
-              </div>
-              <div>
-                <IconButton color="primary">
-                  <EqualizerIcon />
-                </IconButton>
-                <span>1</span>
-              </div>
-              <div>
-                <IconButton color="primary">
-                  <PublishIcon />
-                </IconButton>
-                <span>1</span>
-              </div>
-            </div>
-          </Grid>
-        </Grid>
-      </Container>
-    </Paper>
+        </Container>
+      </Paper>
+    </Link>
   );
 };
 

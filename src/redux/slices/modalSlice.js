@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   open: "",
+  showModal: false,
 };
 
 export const modalSlice = createSlice({
@@ -11,9 +12,12 @@ export const modalSlice = createSlice({
     setOpen(state, action) {
       state.open = action.payload;
     },
+    showModalTweet(state, action) {
+      state.showModal = action.payload;
+    },
   },
 });
 
-export const { setOpen } = modalSlice.actions;
+export const { setOpen, showModalTweet } = modalSlice.actions;
 
 export default modalSlice.reducer;

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import SignIn from "./pages/SignIn";
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
+import Home, { useHomeStyles } from "./pages/Home";
 
 function App() {
   const { open } = useSelector((state) => state.modalSlice);
@@ -14,7 +14,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/signin" element={<SignIn />} />
-        <Route path="/" element={<Home />} />
+        <Route path="/home/*" element={<Home />} />
       </Routes>
     </div>
   );
