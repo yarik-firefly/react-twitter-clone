@@ -15,9 +15,12 @@ import {
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { Skeleton } from "@material-ui/lab";
 
 import Tweet from "../components/Tweet";
 import SideMenu from "../components/SideMenu";
+
+import mediumZoom from "medium-zoom";
 
 import CreateTweet from "../components/Tweet/CreateTweet";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,6 +36,7 @@ import {
 } from "react-router-dom";
 import FullTweet from "../components/FullTweet";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import User from "../components/User/User";
 
 export const useHomeStyles = makeStyles((theme) => ({
   wrapper: {},
@@ -127,21 +131,21 @@ const Home = () => {
   const classes = useHomeStyles();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const params = useParams();
   const { tweets, news, statusTweets, statusNews } = useSelector(
     (state) => state.tweetsSlice
   );
+  const { dataMe, infoUser, infoUserStatus } = useSelector((state) => state.authSlice);
 
   const id = Object.values(params).toString();
 
   React.useEffect(() => {
-    dispatch(getTweets());
-    dispatch(getNewsList());
-  }, []);
-
-  console.log(pathname);
-  console.log();
+    if (pathname === "/home") {
+      dispatch(getTweets());
+    }
+    // dispatch(getNewsList());
+  }, [pathname]);
 
   return (
     <Container maxWidth="lg" style={{ height: "100vh" }}>
@@ -159,17 +163,25 @@ const Home = () => {
               borderTop: 0,
             }}
           >
-            <Paper variant="outlined">
+            <Paper>
               <Typography
                 variant="h6"
                 style={{ fontWeight: 700, padding: "10px 15px" }}
               >
                 {pathname === `/home/${id}` ? (
-                  <div style={{display: 'flex', alignItems: 'center'}}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
                     <IconButton onClick={() => navigate(-1)}>
                       <ArrowBackIcon />
                     </IconButton>
-                    <span style={{marginLeft: 10}}>Твитнуть</span>
+                    <span style={{ marginLeft: 10 }}>
+                      {pathname === "/home/users/tweets/" + infoUser._id ? (
+                        <>{infoUser.fullname}</>
+                      ) : pathname === `/home/${id}` && infoUserStatus !== "loading"  ? (
+                        "Твитнуть"
+                      ) : (
+                        <Skeleton variant="text" width={131} height={32}/>
+                      )}
+                    </span>
                   </div>
                 ) : pathname === "/home" ? (
                   <>Главная</>
@@ -190,17 +202,16 @@ const Home = () => {
             </Paper>
             <Routes>
               <Route path="tweet/:id" element={<FullTweet />} />
+              <Route path={`users/tweets/:id`} element={<User />} />
+
               <Route
                 path=""
                 element={
                   <>
                     <CreateTweet />
+
                     {statusTweets === "SUCCESS" ? (
-                      tweets.map((tweet) => (
-                        <Tweet
-                          {...tweet}
-                        />
-                      ))
+                      tweets.map((tweet) => <Tweet {...tweet} />)
                     ) : statusTweets === "LOADING" ? (
                       <div className={classes.circleProgress}>
                         <CircularProgress style={{ width: 70, height: 70 }} />
@@ -217,64 +228,69 @@ const Home = () => {
           </Paper>
         </Grid>
         <Grid item xs={2} style={{ position: "relative", marginTop: 5 }}>
-          <SearchIcon
-            style={{ position: "absolute", zIndex: 10, top: 20, left: 19 }}
-          />
-          <InputBase className={classes.input} placeholder="Поиск"></InputBase>
-          <div className={classes.rightBar}>
-            <Typography
-              variant="h6"
-              style={{
-                fontSize: 20,
-                fontWeight: 800,
-                whiteSpace: "nowrap",
-                marginBottom: 10,
-              }}
-            >
-              Подписаться на Премиум
-            </Typography>
-            <Typography style={{ fontSize: 15, fontWeight: 700 }}>
-              Подпишитесь, чтобы разблокировать новые функции и, если вы
-              соответствуете требованиям, получать долю дохода от рекламы.
-            </Typography>
-            <Button
-              style={{
-                backgroundColor: "black",
-                color: "white",
-                fontSize: 15,
-                fontWeight: 700,
-                width: 130,
-                height: 40,
-                borderRadius: 30,
-                marginTop: 10,
-              }}
-            >
-              Подписаться
-            </Button>
-          </div>
-          <div className={classes.rightBarNews}>
-            <Typography
-              variant="h5"
-              style={{
-                fontSize: 20,
-                fontWeight: 800,
-                paddingTop: 15,
-                paddingLeft: 12,
-              }}
-            >
-              Тренды для вас
-            </Typography>
-            <List
-              component="nav"
-              className={classes.root}
-              aria-label="mailbox folders"
-            >
-              <Divider />
+          <div style={{ position: "sticky", top: 0 }}>
+            <SearchIcon
+              style={{ position: "absolute", zIndex: 10, top: 20, left: 19 }}
+            />
+            <InputBase
+              className={classes.input}
+              placeholder="Поиск"
+            ></InputBase>
+            <div className={classes.rightBar}>
+              <Typography
+                variant="h6"
+                style={{
+                  fontSize: 20,
+                  fontWeight: 800,
+                  whiteSpace: "nowrap",
+                  marginBottom: 10,
+                }}
+              >
+                Подписаться на Премиум
+              </Typography>
+              <Typography style={{ fontSize: 15, fontWeight: 700 }}>
+                Подпишитесь, чтобы разблокировать новые функции и, если вы
+                соответствуете требованиям, получать долю дохода от рекламы.
+              </Typography>
+              <Button
+                style={{
+                  backgroundColor: "black",
+                  color: "white",
+                  fontSize: 15,
+                  fontWeight: 700,
+                  width: 130,
+                  height: 40,
+                  borderRadius: 30,
+                  marginTop: 10,
+                }}
+              >
+                Подписаться
+              </Button>
+            </div>
+            <div className={classes.rightBarNews}>
+              <Typography
+                variant="h5"
+                style={{
+                  fontSize: 20,
+                  fontWeight: 800,
+                  paddingTop: 15,
+                  paddingLeft: 12,
+                }}
+              >
+                Тренды для вас
+              </Typography>
+              <List
+                component="nav"
+                className={classes.root}
+                aria-label="mailbox folders"
+              >
+                <Divider />
 
-              {news.map((item) => (
-                <NewsList {...item} />
-              ))}
-            </List>
+                {news.map((item) => (
+                  <NewsList {...item} />
+                ))}
+              </List>
+            </div>
           </div>
         </Grid>
       </Grid>
@@ -283,3 +299,13 @@ const Home = () => {
 };
 
 export default Home;
+
+{
+  /* {statusTweets === "LOADING" ? (
+                      <div className={classes.circleProgress}>
+                        <CircularProgress style={{ width: 70, height: 70 }} />
+                      </div>
+                    ) : (
+                      tweets.map((tweet) => <Tweet {...tweet} />)
+                    )} */
+}

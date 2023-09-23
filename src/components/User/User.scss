@@ -1,0 +1,68 @@
+.empty-block {
+  width: 100%;
+  height: 200px;
+  background-color: #cfd9de;
+}
+
+.info {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+
+  button {
+    border: 0.5px solid #a7a3a3;
+    background-color: white;
+    border-radius: 20px;
+    margin: 15px 15px 0 0;
+  }
+
+  button > span {
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  &__avatar {
+    position: absolute;
+  }
+  & .MuiAvatar-root {
+    width: 130px !important;
+    height: 130px !important;
+    position: absolute;
+    top: -75px;
+    left: 18px;
+    font-size: 55px; 
+  }
+
+  &__person {
+    margin-top: 50px;
+    margin-left: 20px;
+    :first-child {
+      font-size: 30px;
+      font-weight: 800;
+    }
+    :nth-child(2) {
+      font-size: 22px;
+      color: #6a7883;
+    }
+    :nth-child(3) {
+      font-size: 19px;
+      color: #6a7883;
+      display: flex;
+      align-items: center;
+      svg {
+        margin-right: 10px;
+        font-size: 25px;
+      }
+    }
+    span {
+      font-size: 18px;
+      margin: 0 5px;
+      font-weight: 400;
+      margin-right: 10px;
+    }
+  }
+}
+
+.block-tabs {
+  margin-top: 15px;
+}

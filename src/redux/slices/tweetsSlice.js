@@ -1,39 +1,81 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { axios } from "../../core/axios";
 
-export const getTweets = createAsyncThunk("tweets/getTweets", async () => {
-  const { data } = await axios.get(`http://localhost:3001/tweets`);
-  return await data;
-});
+export const getTweets = createAsyncThunk(
+  "tweets/getTweets",
+  async (id, { dispatch }) => {
+    const { data } = await axios.get(
+      id
+        ? `http://localhost:8888/users/tweets/${id}`
+        : `http://localhost:8888/tweets`
+    );
+    // dispatch(addTweet(data.data));
+    console.log(data);
+    return await data.data;
+  }
+);
 
 export const getNewsList = createAsyncThunk("news/getNewsList", async () => {
-  const { data } = await axios.get(`http://localhost:3001/news`);
+  const { data } = await axios.get(`/news`);
   return await data;
 });
 
 export const getOneTwitt = createAsyncThunk(
   "tweets/getOneTwitt",
   async (id) => {
-    const { data } = await axios.get(`http://localhost:3001/tweets?_id=${id}`);
-    return await data;
+    const { data } = await axios.get(`http://localhost:8888/tweet/${id}`);
+    return [data.data];
   }
 );
 
-export const postTwitt = createAsyncThunk("tweets/postTwitt", async (twitt) => {
-  return await axios.post(`http://localhost:3001/tweets`, {
-    date: {
-      day: new Date().getDate(),
-      mounth: new Date().getMonth(),
-      year: new Date().getFullYear(),
-    },
-    id: Math.random() * 1000,
-    text: twitt,
-    _id: 0,
-    avatarUrl: "",
-    fullname: "",
-    username: "",
-  });
-});
+export const getAllTweetOfUser = createAsyncThunk(
+  "tweets/getAllTweetOfUser",
+  async (id) => {
+    const { data } = await axios.get(
+      `http://localhost:8888/users/tweets/${id}`
+    );
+    return data.data;
+  }
+);
+
+export const deleteTweet = createAsyncThunk(
+  "tweets/deleteTwitt",
+  async (id, { dispatch }) => {
+    const { data } = await axios.delete(`http://localhost:8888/tweet/${id}`);
+    dispatch(removeTweet(id));
+    return data.data._id;
+  }
+);
+
+export const postTwitt = createAsyncThunk(
+  "tweets/postTwitt",
+  async (payload, { dispatch }) => {
+    try {
+      const { data } = await axios.post(`http://localhost:8888/tweet`, payload);
+      console.log(data);
+      dispatch(addTweet(data.data));
+      // dispatch(getTweets());
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
+
+export const uploadImg = createAsyncThunk(
+  "tweets/uploadImg",
+  async (image, { dispatch }) => {
+    try {
+      const images = {
+        image: image,
+      };
+      const { data } = await axios.post(`http://localhost:8888/upload`, images);
+      return data;
+      // dispatch(getTweets());
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
 
 const initialState = {
   tweets: [] || null,
@@ -42,12 +84,22 @@ const initialState = {
   statusTweets: "LOADING",
   statusNews: "LOADING",
   statusOneTweet: "LOADING",
+  statusPostTweet: "LOADING",
 };
 
 const tweetsSlice = createSlice({
   name: "tweets",
   initialState,
-  reducers: {},
+  reducers: {
+    addTweet(state, action) {
+      state.tweets.unshift(action.payload);
+    },
+    removeTweet(state, action) {
+      state.tweets = state.tweets.filter(
+        (tweet) => tweet._id !== action.payload
+      );
+    },
+  },
   extraReducers: {
     [getTweets.pending]: (state) => {
       state.statusTweets = "LOADING";
@@ -83,16 +135,23 @@ const tweetsSlice = createSlice({
     },
     //=================================================
     [postTwitt.pending]: (state) => {
-      state.statusTweets = "LOADING";
+      state.statusPostTweet = "LOADING";
     },
     [postTwitt.fulfilled]: (state, action) => {
-      state.tweets.push(action.payload);
-      state.statusTweets = "SUCCESS";
+      // state.tweets = [action.payload, ...state.tweets];
+      state.statusPostTweet = "SUCCESS";
     },
     [postTwitt.rejected]: (state) => {
-      state.statusTweets = "ERROR";
+      state.statusPostTweet = "ERROR";
     },
+    //===================================================
+    [getAllTweetOfUser.pending]: (state) => {},
+    [getAllTweetOfUser.fulfilled]: (state, action) => {
+      state.tweets = action.payload;
+    },
+    [getAllTweetOfUser.rejected]: (state) => {},
   },
 });
 
+export const { addTweet, removeTweet } = tweetsSlice.actions;
 export default tweetsSlice.reducer;

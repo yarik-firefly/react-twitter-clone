@@ -1,6 +1,6 @@
 import React from "react";
 import { useHomeStyles } from "../pages/Home";
-import { Button, Hidden, IconButton, Typography } from "@material-ui/core";
+import { Hidden, IconButton, Typography } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
@@ -19,16 +19,18 @@ import { useStyles } from "./Modal/ModalWindow";
 import { useDispatch, useSelector } from "react-redux";
 import { showModalTweet } from "../redux/slices/modalSlice";
 import { Link } from "react-router-dom";
+import SidePanelUser from "./User/SidePanelUser";
 
 const SideMenu = () => {
   const clickOnAddTweet = () => {};
   // const [addTweet, setAddTweet] = React.useState(false);
   const { showModal } = useSelector((state) => state.modalSlice);
+  const { dataMe } = useSelector((state) => state.authSlice);
   const dispatch = useDispatch();
   const classes = useHomeStyles();
   const classModal = useStyles();
   return (
-    <>
+    <div style={{ position: "sticky", top: 0 }}>
       <svg
         width={50}
         height={30}
@@ -43,7 +45,7 @@ const SideMenu = () => {
       <ul className={classes.list}>
         <Link style={{ color: "inherit", textDecoration: "none" }} to="/home">
           <li>
-            <IconButton aria-label="delete" color="primary">
+            <IconButton aria-label="delete">
               <HomeIcon />
             </IconButton>
             <Hidden xsDown>
@@ -51,7 +53,6 @@ const SideMenu = () => {
             </Hidden>
           </li>
         </Link>
-
         <li>
           <IconButton>
             <SearchIcon />
@@ -90,12 +91,15 @@ const SideMenu = () => {
           </IconButton>
           <Typography>Проверенные</Typography>
         </li>
-        <li>
-          <IconButton>
-            <PersonIcon />
-          </IconButton>
-          <Typography>Профиль</Typography>
-        </li>
+        <Link to={`users/tweets/${dataMe?._id}`}>
+          <li>
+            <IconButton>
+              <PersonIcon />
+            </IconButton>
+            <Typography>Профиль</Typography>
+          </li>
+        </Link>
+
         <li>
           <IconButton>
             <MoreHorizIcon />
@@ -103,7 +107,8 @@ const SideMenu = () => {
           <Typography>Больше</Typography>
         </li>
       </ul>
-      <ButtonTweet width="270" height="65" fontSize="17" sideBtn/>
+
+      <ButtonTweet width="270" height="65" fontSize="17" sideBtn />
 
       <div>
         <Modal
@@ -125,7 +130,8 @@ const SideMenu = () => {
           </Fade>
         </Modal>
       </div>
-    </>
+      <SidePanelUser />
+    </div>
   );
 };
 

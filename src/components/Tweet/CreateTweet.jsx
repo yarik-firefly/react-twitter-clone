@@ -1,5 +1,4 @@
 import React from "react";
-import ImageIcon from "@material-ui/icons/Image";
 import GifIcon from "@material-ui/icons/Gif";
 import ListIcon from "@material-ui/icons/List";
 import MoodIcon from "@material-ui/icons/Mood";
@@ -14,16 +13,25 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
+import Alert from "@material-ui/lab/Alert";
 import { useHomeStyles } from "../../pages/Home";
 import ButtonTweet from "../ButtonTweet";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { showModalTweet } from "../../redux/slices/modalSlice";
+import UploadImages from "../UploadImage/UploadImages";
 
 const CreateTweet = ({ close }) => {
+  const { statusPostTweet, statusTweets } = useSelector(
+    (state) => state.tweetsSlice
+  );
   const [text, setText] = React.useState("");
   const progress = (text.length / 280) * 100;
   const maxLength = 280 - text.length;
+  const [image, setImage] = React.useState([]);
+
+  const deleteImage = (url) => {
+    setImage((prev) => prev.filter((_url) => _url.blobUrl !== url));
+  };
 
   const dispatch = useDispatch();
 
@@ -42,6 +50,21 @@ const CreateTweet = ({ close }) => {
     },
   });
   const classesTweet = useTweetStyles();
+  const [state, setState] = React.useState({
+    open: false,
+    vertical: "top",
+    horizontal: "center",
+  });
+
+  const { vertical, horizontal, open } = state;
+
+  // const handleClick = (newState) => () => {
+  //   setState({ open: true, ...newState });
+  // };
+
+  const handleClose = () => {
+    setState({ ...state, open: false });
+  };
 
   return (
     <>
@@ -53,7 +76,6 @@ const CreateTweet = ({ close }) => {
             </IconButton>
           )}
         </div>
-
         <Paper className={classes.myTweet}>
           <Grid xs={1}>
             <Avatar />
@@ -77,21 +99,22 @@ const CreateTweet = ({ close }) => {
               }}
             >
               <div>
-                <IconButton color="primary">
-                  <ImageIcon />
-                </IconButton>
-                <IconButton color="primary">
+                <UploadImages
+                  image={image}
+                  setImage={setImage}
+                  deleteImage={deleteImage}
+                />
+
+                {/* <IconButton color="primary">
                   <GifIcon />
                 </IconButton>
                 <IconButton color="primary">
                   <ListIcon />
-                </IconButton>
-                <IconButton color="primary">
-                  <MoodIcon />
-                </IconButton>
-                <IconButton color="primary">
+                </IconButton> */}
+
+                {/* <IconButton color="primary">
                   <DateRangeIcon />
-                </IconButton>
+                </IconButton> */}
               </div>
               {text && (
                 <div style={{ position: "relative" }}>
@@ -122,16 +145,22 @@ const CreateTweet = ({ close }) => {
                   />
 
                   <ButtonTweet
+                    image={image}
                     disabled={progress >= 100}
                     width={65}
                     height={36}
                     fontSize={10}
                     origin
                     text={text}
+                    setText={setText}
+                    setImage={setImage}
                   />
                 </div>
               )}
             </div>
+            {statusPostTweet === "ERROR" && (
+              <Alert severity="error">Не удалось твитнуть 😢</Alert>
+            )}
           </Grid>
         </Paper>
       </Paper>

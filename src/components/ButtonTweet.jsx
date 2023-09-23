@@ -3,6 +3,7 @@ import { Button } from "@material-ui/core";
 import { showModalTweet } from "../redux/slices/modalSlice";
 import { useDispatch } from "react-redux";
 import { postTwitt } from "../redux/slices/tweetsSlice";
+import { uploadImage } from "../utils/uploadImage";
 
 const ButtonTweet = ({
   width,
@@ -12,14 +13,29 @@ const ButtonTweet = ({
   sideBtn,
   origin,
   text,
+  setText,
+  image,
+  setImage,
 }) => {
   const dispatch = useDispatch();
+  const onClickButtonHandler = async () => {
+    const urls = [];
+    for (let i = 0; i < image.length; i++) {
+      const file = image[i].file;
+      const { url } = await uploadImage(file);
+      urls.push(url);
+    }
+    dispatch(postTwitt({ text, images: urls }));
+    setText("");
+    setImage([]);
+    dispatch(showModalTweet(false));
+  };
   return (
     <Button
       onClick={
         sideBtn
           ? () => dispatch(showModalTweet(true))
-          : () => dispatch(postTwitt(text))
+          : () => onClickButtonHandler()
       }
       disabled={disabled}
       variant="contained"

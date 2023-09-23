@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const NewsList = (news) => {
   return (
-    <>
+    <div>
       <Link to={`/home/search?q=${news.theme}`}>
         <ListItem button>
           <div>
@@ -21,7 +21,7 @@ const NewsList = (news) => {
         </ListItem>
         <Divider />
       </Link>
-    </>
+    </div>
   );
 };
 

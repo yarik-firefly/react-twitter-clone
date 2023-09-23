@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useHomeStyles } from "../../pages/Home";
 import MessageIcon from "@material-ui/icons/ChatBubbleOutline";
 import RepeatIcon from "@material-ui/icons/Repeat";
 import FavoriteIcon from "@material-ui/icons/FavoriteBorder";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
 import PublishIcon from "@material-ui/icons/Publish";
+import Image from "../UploadImage/Image";
+
 import {
   Grid,
   Container,
@@ -14,24 +16,61 @@ import {
   Avatar,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { formatData } from "../../utils/formatData";
+import { format } from "date-fns";
+import ruLang from "date-fns/locale/ru";
+import BurgerButton from "../BurgerButton/BurgerButton";
 
-const Tweet = ({ text, fullname, username, avatarUrl, id, none, date }) => {
+const Tweet = ({ text, user, _id, none, createdAt, images, userPage }) => {
+  const burgerRef = useRef(null);
+  const linkRef = React.useRef(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClickBurger = (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+    console.log(event.target);
+    // event.stopPropagation();
+    // event.preventDefault();
+    // burgerRef.current = true;
+    setAnchorEl(event.target);
+
+    // console.log(event);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  console.log(burgerRef);
+  console.log(linkRef);
+
   const classes = useHomeStyles();
+  const { username, avatarUrl, fullname, _id: userId } = user;
   return (
-    <Link
+    <Paper
+      className={classes.tweet}
       style={{
-        color: "inherit",
-        textDecoration: "none",
-        pointerEvents: none ? "none" : "auto",
+        paddingTop: 15,
+        pointerEvents: none || userPage ? "none" : "auto",
       }}
-      to={`/home/tweet/${id}`}
+      variant="outlined"
     >
-      <Paper
-        className={classes.tweet}
-        style={{ paddingTop: 15 }}
-        variant="outlined"
+      <Link
+        ref={linkRef}
+        onClick={(e) => {
+          if (e.target) {
+            return;
+          }
+        }}
+        style={{
+          color: "inherit",
+          textDecoration: "none",
+          pointerEvents: none || userPage ? "none" : "auto",
+        }}
+        to={`/home/tweet/${_id}`}
+        disa
       >
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" style={{ cursor: "default" }}>
           <Grid container spacing={3}>
             <Grid item xs={1}>
               <Avatar
@@ -41,17 +80,55 @@ const Tweet = ({ text, fullname, username, avatarUrl, id, none, date }) => {
               />
             </Grid>
             <Grid style={{ paddingLeft: 25 }} item xs={11}>
-              <Typography>
+              <Typography
+                style={{
+                  marginBottom: 20,
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
                 <b>{fullname}</b>
-                <span className={classes.tweetUserName}>@{username}</span>
-                <b> · </b>
-                <span>
-                  {date?.day}.
-                  0{date?.mounth + 1}.
-                  {date?.year}
+                <Link to={`users/tweets/${userId}`}>
+                  <span
+                    style={{ color: "#0005ff" }}
+                    className={classes.tweetUserName}
+                  >
+                    @{username}
+                  </span>
+                </Link>
+                <b style={{ margin: "0 4px" }}> · </b>
+                <span style={{ color: "#9c9a9a" }}>
+                  {formatData(new Date(createdAt))}
                 </span>
+                <BurgerButton
+                  id={_id}
+                  refer={burgerRef}
+                  click={handleClickBurger}
+                  setAnchorEl={setAnchorEl}
+                  anchorEl={anchorEl}
+                  handleClose={handleClose}
+                />
               </Typography>
-              <Typography>{text}</Typography>
+
+              <Typography
+                style={{ marginBottom: 20, fontSize: 20, cursor: "default" }}
+              >
+                {text}
+              </Typography>
+              {none && (
+                <Typography style={{ color: "#9c9a9a", marginBottom: 25 }}>
+                  <span>
+                    {format(new Date(createdAt), "H:mm:ss", { locale: ruLang })}
+                  </span>
+                  <span style={{ marginLeft: 10 }}>
+                    {format(new Date(createdAt), "dd MMM. yyyy г.", {
+                      locale: ruLang,
+                    })}
+                  </span>
+                </Typography>
+              )}
+              <div>{none && <Image image={images} />}</div>
+
               <div className={classes.tweetIconsPost}>
                 <div>
                   <IconButton color="primary">
@@ -87,8 +164,8 @@ const Tweet = ({ text, fullname, username, avatarUrl, id, none, date }) => {
             </Grid>
           </Grid>
         </Container>
-      </Paper>
-    </Link>
+      </Link>
+    </Paper>
   );
 };
 
