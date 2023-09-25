@@ -28,9 +28,9 @@ function App() {
 
   React.useEffect(() => {
     if (Boolean(auth)) {
-      navigate("/home");
+      navigate("/home*");
     } else {
-      navigate("/signin");
+      navigate("/signin*");
     }
   }, [auth]);
 
