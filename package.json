@@ -2,7 +2,6 @@
   "name": "twitter-clone-react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://yarik-firefly.github.io/react-twitter-clone/",
   "dependencies": {
     "@babel/core": "^7.16.0",
     "@hookform/resolvers": "^3.3.1",

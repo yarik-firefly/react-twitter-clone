@@ -6,8 +6,8 @@ export const getTweets = createAsyncThunk(
   async (id, { dispatch }) => {
     const { data } = await axios.get(
       id
-        ? `http://localhost:8888/users/tweets/${id}`
-        : `http://localhost:8888/tweets`
+        ? `${process.env.REACT_APP_API_URL}/users/tweets/${id}`
+        : `${process.env.REACT_APP_API_URL}/tweets`
     );
     // dispatch(addTweet(data.data));
     console.log(data);
@@ -23,7 +23,7 @@ export const getNewsList = createAsyncThunk("news/getNewsList", async () => {
 export const getOneTwitt = createAsyncThunk(
   "tweets/getOneTwitt",
   async (id) => {
-    const { data } = await axios.get(`http://localhost:8888/tweet/${id}`);
+    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/tweet/${id}`);
     return [data.data];
   }
 );
@@ -32,7 +32,7 @@ export const getAllTweetOfUser = createAsyncThunk(
   "tweets/getAllTweetOfUser",
   async (id) => {
     const { data } = await axios.get(
-      `http://localhost:8888/users/tweets/${id}`
+      `${process.env.REACT_APP_API_URL}/users/tweets/${id}`
     );
     return data.data;
   }
@@ -41,7 +41,7 @@ export const getAllTweetOfUser = createAsyncThunk(
 export const deleteTweet = createAsyncThunk(
   "tweets/deleteTwitt",
   async (id, { dispatch }) => {
-    const { data } = await axios.delete(`http://localhost:8888/tweet/${id}`);
+    const { data } = await axios.delete(`${process.env.REACT_APP_API_URL}/tweet/${id}`);
     dispatch(removeTweet(id));
     return data.data._id;
   }
@@ -51,7 +51,7 @@ export const postTwitt = createAsyncThunk(
   "tweets/postTwitt",
   async (payload, { dispatch }) => {
     try {
-      const { data } = await axios.post(`http://localhost:8888/tweet`, payload);
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/tweet`, payload);
       console.log(data);
       dispatch(addTweet(data.data));
       // dispatch(getTweets());
@@ -68,7 +68,7 @@ export const uploadImg = createAsyncThunk(
       const images = {
         image: image,
       };
-      const { data } = await axios.post(`http://localhost:8888/upload`, images);
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/upload`, images);
       return data;
       // dispatch(getTweets());
     } catch (error) {
