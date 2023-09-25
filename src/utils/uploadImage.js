@@ -4,7 +4,7 @@ export const uploadImage = async (image) => {
   const formData = new FormData();
   formData.append("image", image);
   const { data } = await axios.post(
-    `${process.env.REACT_APP_API_URL}/upload`,
+    `${process.env.REACT_APP_API_URL}upload`,
     formData,
     {
       headers: {

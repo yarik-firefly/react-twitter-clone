@@ -10,7 +10,7 @@ export const login = createAsyncThunk(
         password: info.password,
       };
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/auth/login`,
+        `${process.env.REACT_APP_API_URL}auth/login`,
         infoUser
       );
       console.log(data);
@@ -26,7 +26,7 @@ export const login = createAsyncThunk(
 
 export const getMe = createAsyncThunk("auth/getMe", async (_, { dispatch }) => {
   try {
-    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/users/me`);
+    const { data } = await axios.get(`${process.env.REACT_APP_API_URL}users/me`);
     if (data) {
       dispatch(checkAuth(true));
       return data.data;
@@ -41,7 +41,7 @@ export const getOneUser = createAsyncThunk(
   "auth/getOneUser",
   async (id, { dispatch }) => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/users/${id}`);
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}users/${id}`);
       return data.data;
     } catch (error) {
       console.error(error);
@@ -60,7 +60,7 @@ export const register = createAsyncThunk(
         password: info.password,
         password2: info.password2,
       };
-      await axios.post(`${process.env.REACT_APP_API_URL}/auth/register`, infoUser);
+      await axios.post(`${process.env.REACT_APP_API_URL}auth/register`, infoUser);
       // dispatch(checkAuth(true));
     } catch (error) {
       dispatch(checkAuth(false));
