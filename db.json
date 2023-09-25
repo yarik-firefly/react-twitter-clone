@@ -1,0 +1,90 @@
+{
+  "tweets": [
+    {
+      "date": {
+        "day": 27,
+        "mounth": 7,
+        "year": 2023
+      },
+      "id": 1,
+      "text": "Gone Away",
+      "_id": 0,
+      "avatarUrl": "https://pbs.twimg.com/profile_images/1532982915180765187/T4PKQt1h_400x400.jpg",
+      "fullname": "medgoblin",
+      "username": "med_goblin"
+    },
+    {
+      "date": {
+        "day": 27,
+        "mounth": 7,
+        "year": 2023
+      },
+      "text": "123",
+      "_id": 0,
+      "avatarUrl": "https://pbs.twimg.com/profile_images/1532982915180765187/T4PKQt1h_400x400.jpg",
+      "fullname": "medgoblin",
+      "username": "med_goblin",
+      "id": 2
+    },
+    {
+      "date": {
+        "day": 27,
+        "mounth": 7,
+        "year": 2023
+      },
+      "text": "😍",
+      "_id": 0,
+      "avatarUrl": "https://pbs.twimg.com/profile_images/1532982915180765187/T4PKQt1h_400x400.jpg",
+      "fullname": "medgoblin",
+      "username": "med_goblin",
+      "id": 3
+    }
+  ],
+  "news": [
+    {
+      "title": "Тренды в Украине",
+      "theme": "Япония",
+      "count": 514000
+    },
+    {
+      "title": "Тренды в Украине",
+      "theme": "#нюдсочетверг",
+      "count": 2654
+    },
+    {
+      "title": "Политика · Тенденции",
+      "theme": "Dnipro",
+      "count": 2669
+    },
+    {
+      "title": "Тренды в Украине",
+      "theme": "Япония",
+      "count": 514000
+    },
+    {
+      "title": "Тренды в Украине",
+      "theme": "#нюдсочетверг",
+      "count": 2654
+    },
+    {
+      "title": "Политика · Тенденции",
+      "theme": "Dnipro",
+      "count": 2669
+    },
+    {
+      "title": "Тренды в Украине",
+      "theme": "Япония",
+      "count": 514000
+    },
+    {
+      "title": "Тренды в Украине",
+      "theme": "#нюдсочетверг",
+      "count": 2654
+    },
+    {
+      "title": "Политика · Тенденции",
+      "theme": "Dnipro",
+      "count": 2669
+    }
+  ]
+}
