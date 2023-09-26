@@ -1,6 +1,13 @@
 .wrapper {
   display: inline-block;
   position: relative;
+  & .image-zoom {
+    width: 20px;
+  }
+  & .MuiImageList-root {
+    flex-wrap: nowrap !important;
+  }
+  
 }
 
 .root {
@@ -13,6 +20,7 @@
   overflow: hidden;
   border-radius: 10px;
   transition: opacity 0.3s ease;
+
   &:hover {
     opacity: 0.5;
 
@@ -35,4 +43,32 @@
     cursor: pointer;
     transform: scale(1.2);
   }
+}
+
+.rootImage {
+  display: flex;
+  flex-wrap: nowrap !important;
+  justify-content: space-around;
+  overflow: auto !important;
+ 
+}
+
+.rootImageFullTweet {
+  display: flex;
+  flex-wrap: wrap !important;
+  justify-content: space-around;
+  overflow: hidden !important;
+ 
+}
+.imageList {
+  flex-wrap: "nowrap";
+  transform: "translateZ(0)";
+}
+
+.title {
+  color: lighten($color: #000000, $amount: 5);
+}
+
+.titleBar {
+  background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rg.ba(0,0,0,0) 100%)";
 }

@@ -19,7 +19,7 @@ const FullTweet = () => {
   return (
     <>
       {statusOneTweet === "SUCCESS" ? (
-        oneTweet.map((tweet) => <Tweet {...tweet} none />)
+        oneTweet.map((tweet) => <Tweet {...tweet} none fullTweet />)
       ) : statusOneTweet === "LOADING" ? (
         <div
           style={{

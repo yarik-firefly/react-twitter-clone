@@ -49,7 +49,7 @@ export const UploadImages = ({ image, setImage, deleteImage }) => {
       </IconButton>
       <input ref={inputRef} type="file" id="upload-file" hidden />
       <div>
-        <Image image={image} deleteImage={deleteImage} delIco/>
+        <Image key={1} image={image} deleteImage={deleteImage} delIco/>
       </div>
     </div>
   );
