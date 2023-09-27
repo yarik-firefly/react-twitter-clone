@@ -108,7 +108,7 @@ const SideMenu = () => {
         </li>
       </ul>
 
-      <ButtonTweet width="270" height="65" fontSize="17" sideBtn />
+      <ButtonTweet width="265" height="45" fontSize="17" sideBtn />
 
       <div>
         <Modal
@@ -125,7 +125,7 @@ const SideMenu = () => {
         >
           <Fade in={showModal} style={{ width: 550 }}>
             <div>
-              <CreateTweet close />
+              <CreateTweet close placeholder={"Что у Вас произошло?"} />
             </div>
           </Fade>
         </Modal>

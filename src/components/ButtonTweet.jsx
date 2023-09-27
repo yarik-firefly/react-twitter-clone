@@ -4,6 +4,7 @@ import { showModalTweet } from "../redux/slices/modalSlice";
 import { useDispatch } from "react-redux";
 import { postTwitt } from "../redux/slices/tweetsSlice";
 import { uploadImage } from "../utils/uploadImage";
+import { createComment } from "../redux/slices/CommentsSlice";
 
 const ButtonTweet = ({
   width,
@@ -16,19 +17,29 @@ const ButtonTweet = ({
   setText,
   image,
   setImage,
+  placeholder,
+  _id,
 }) => {
   const dispatch = useDispatch();
   const onClickButtonHandler = async () => {
-    const urls = [];
-    for (let i = 0; i < image.length; i++) {
-      const file = image[i].file;
-      const { url } = await uploadImage(file);
-      urls.push(url);
+    if (placeholder === "Что у Вас произошло?") {
+      const urls = [];
+      for (let i = 0; i < image.length; i++) {
+        const file = image[i].file;
+        const { url } = await uploadImage(file);
+        urls.push(url);
+      }
+      dispatch(postTwitt({ text, images: urls }));
+      setText("");
+      setImage([]);
+      dispatch(showModalTweet(false));
+    } else {
+      const data = {
+        text: text,
+        id: _id,
+      };
+      dispatch(createComment(data));
     }
-    dispatch(postTwitt({ text, images: urls }));
-    setText("");
-    setImage([]);
-    dispatch(showModalTweet(false));
   };
   return (
     <Button
@@ -51,7 +62,7 @@ const ButtonTweet = ({
         borderRadius: 40,
       }}
     >
-      Твитнуть
+      {placeholder === "Что у Вас произошло?" ? "Твитнуть" : "Ответить"}
     </Button>
   );
 };

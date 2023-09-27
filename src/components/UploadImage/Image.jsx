@@ -21,11 +21,9 @@ export const Image = ({ image, deleteImage, none, key, fullTweet }) => {
   //   }
   // }, [statusTweets]);
 
-  if (statusTweets !== "SUCCESS") {
-    return <>Loading...</>;
-  }
-  console.log(imgRef);
-  window.mediumZoom = mediumZoom();
+  // if (statusTweets !== "SUCCESS") {
+  //   return <>Loading...</>;
+  // }
 
   return (
     <>

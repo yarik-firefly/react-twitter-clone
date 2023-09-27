@@ -3,9 +3,21 @@ import ImageIcon from "@material-ui/icons/Image";
 import MoodIcon from "@material-ui/icons/Mood";
 import { IconButton } from "@material-ui/core";
 import Image from "./Image";
-
-export const UploadImages = ({ image, setImage, deleteImage }) => {
+import EmojiPicker from "emoji-picker-react";
+import "./UploadImage.scss";
+export const UploadImages = ({
+  image,
+  setImage,
+  deleteImage,
+  placeholder,
+  setText,
+  text,
+}) => {
   const inputRef = React.useRef(null);
+  const [visible, setVisible] = React.useState(false);
+  const onEmojiClick = (e) => {
+    setText((prev) => prev + e.emoji);
+  };
 
   const uploadFunc = React.useCallback((event) => {
     const file = event.target.files[0];
@@ -41,15 +53,25 @@ export const UploadImages = ({ image, setImage, deleteImage }) => {
 
   return (
     <div style={{ display: "inline-block", maxWidth: 400 }}>
-      <IconButton color="primary" onClick={handleClickIcon}>
-        <ImageIcon />
-      </IconButton>
-      <IconButton color="primary">
+      {placeholder === "Что у Вас произошло?" && (
+        <IconButton color="primary" onClick={handleClickIcon}>
+          <ImageIcon />
+        </IconButton>
+      )}
+
+      <IconButton onClick={() => setVisible(!visible)} color="primary">
         <MoodIcon />
       </IconButton>
+      {visible && (
+        <EmojiPicker
+          emojiStyle="google"
+          style={{ position: "absolute" }}
+          onEmojiClick={onEmojiClick}
+        />
+      )}
       <input ref={inputRef} type="file" id="upload-file" hidden />
       <div>
-        <Image key={1} image={image} deleteImage={deleteImage} delIco/>
+        <Image key={1} image={image} deleteImage={deleteImage} delIco />
       </div>
     </div>
   );

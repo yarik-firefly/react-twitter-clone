@@ -22,13 +22,23 @@ import ruLang from "date-fns/locale/ru";
 import BurgerButton from "../BurgerButton/BurgerButton";
 import { useSelector } from "react-redux";
 
-const Tweet = ({ text, user, _id, none, createdAt, images, userPage, fullTweet }) => {
+const Tweet = ({
+  text,
+  user,
+  _id,
+  none,
+  createdAt,
+  images,
+  userPage,
+  fullTweet,
+}) => {
   const burgerRef = useRef(null);
   const linkRef = React.useRef(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const { dataMe } = useSelector((state) => state.authSlice);
   const { oneTweet } = useSelector((state) => state.tweetsSlice);
+  const { comments } = useSelector((state) => state.CommentsSlice);
 
   const handleClickBurger = (event) => {
     event.stopPropagation();
@@ -134,40 +144,44 @@ const Tweet = ({ text, user, _id, none, createdAt, images, userPage, fullTweet }
                 </span>
               </Typography>
             )}
-            <Image none image={images} fullTweet={fullTweet}/>
+            <Image none image={images} fullTweet={fullTweet} />
 
-            <div className={classes.tweetIconsPost}>
-              <div>
-                <IconButton color="primary">
-                  <MessageIcon />
-                </IconButton>
-                <span>1</span>
+            {!none && (
+              <div className={classes.tweetIconsPost}>
+                <div>
+                  <Link to={`/home/tweet/${_id}`}>
+                    <IconButton color="primary">
+                      <MessageIcon />
+                    </IconButton>
+                  </Link>
+                  <span></span>
+                </div>
+                <div>
+                  <IconButton color="primary">
+                    <RepeatIcon />
+                  </IconButton>
+                  <span></span>
+                </div>
+                <div>
+                  <IconButton color="primary">
+                    <FavoriteIcon />
+                  </IconButton>
+                  <span></span>
+                </div>
+                <div>
+                  <IconButton color="primary">
+                    <EqualizerIcon />
+                  </IconButton>
+                  <span></span>
+                </div>
+                <div>
+                  <IconButton color="primary">
+                    <PublishIcon />
+                  </IconButton>
+                  <span></span>
+                </div>
               </div>
-              <div>
-                <IconButton color="primary">
-                  <RepeatIcon />
-                </IconButton>
-                <span>1</span>
-              </div>
-              <div>
-                <IconButton color="primary">
-                  <FavoriteIcon />
-                </IconButton>
-                <span>1</span>
-              </div>
-              <div>
-                <IconButton color="primary">
-                  <EqualizerIcon />
-                </IconButton>
-                <span>1</span>
-              </div>
-              <div>
-                <IconButton color="primary">
-                  <PublishIcon />
-                </IconButton>
-                <span>1</span>
-              </div>
-            </div>
+            )}
           </Grid>
         </Grid>
       </Container>

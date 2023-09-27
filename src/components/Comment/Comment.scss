@@ -1,0 +1,14 @@
+.comment-block {
+  &__empty {
+    margin-top: 100px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 500;
+    & span {
+        font-size: 15px;
+    }
+  }
+  .comments-title {
+    margin-left: 15px;
+  }
+}

@@ -39,7 +39,7 @@ export const User = () => {
     <div>
       <div className="empty-block"></div>
       <div className="info">
-        <Avatar>Я</Avatar>
+        <Avatar src="blob:https://web.telegram.org/4a157085-52c6-45eb-a74a-d19f8cf0b774"></Avatar>
 
         <div className="info__person">
           <h4>{infoUser.fullname}</h4>
@@ -75,7 +75,7 @@ export const User = () => {
       </div>
       <div>
         {tweets.map((tweet) => (
-          <Tweet {...tweet} userPage/>
+          <Tweet {...tweet} userPage />
         ))}
       </div>
     </div>

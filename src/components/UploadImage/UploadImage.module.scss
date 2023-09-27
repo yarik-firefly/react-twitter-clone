@@ -7,7 +7,6 @@
   & .MuiImageList-root {
     flex-wrap: nowrap !important;
   }
-  
 }
 
 .root {
@@ -50,7 +49,6 @@
   flex-wrap: nowrap !important;
   justify-content: space-around;
   overflow: auto !important;
- 
 }
 
 .rootImageFullTweet {
@@ -58,7 +56,7 @@
   flex-wrap: wrap !important;
   justify-content: space-around;
   overflow: hidden !important;
- 
+  margin-bottom: 10px !important;
 }
 .imageList {
   flex-wrap: "nowrap";
@@ -71,4 +69,11 @@
 
 .titleBar {
   background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rg.ba(0,0,0,0) 100%)";
+}
+
+.wrapperEmoji {
+  & .EmojiPickerReact {
+    position: absolute !important;
+  }
+
 }

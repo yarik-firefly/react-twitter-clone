@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { showModalTweet } from "../../redux/slices/modalSlice";
 import UploadImages from "../UploadImage/UploadImages";
 
-const CreateTweet = ({ close }) => {
+const CreateTweet = ({ close, placeholder, id }) => {
   const { statusPostTweet, statusTweets } = useSelector(
     (state) => state.tweetsSlice
   );
@@ -68,7 +68,13 @@ const CreateTweet = ({ close }) => {
 
   return (
     <>
-      <Paper>
+      <Paper
+      // style={{
+      //   boxShadow:
+      //     "0px 22px 1px 1px rgba(0,0,0,0.09), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12",
+      //   marginBottom: 15,
+      // }}
+      >
         <div style={{ borderBottom: "1px solid rgb(247,249,249)" }}>
           {close && (
             <IconButton>
@@ -87,7 +93,7 @@ const CreateTweet = ({ close }) => {
               multiline
               value={text}
               onChange={(e) => circleProgress(e.target.value)}
-              placeholder="Что у Вас произошло?"
+              placeholder={placeholder}
               fullWidth
             />
             <div
@@ -103,6 +109,9 @@ const CreateTweet = ({ close }) => {
                   image={image}
                   setImage={setImage}
                   deleteImage={deleteImage}
+                  placeholder={placeholder}
+                  setText={setText}
+                  text={text}
                 />
 
                 {/* <IconButton color="primary">
@@ -154,6 +163,8 @@ const CreateTweet = ({ close }) => {
                     text={text}
                     setText={setText}
                     setImage={setImage}
+                    placeholder={placeholder}
+                    _id={id}
                   />
                 </div>
               )}

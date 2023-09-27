@@ -34,6 +34,8 @@ export const BurgerButton = ({
 
   const handleDeleteClick = () => {
     dispatch(deleteTweet(id));
+    setAnchorEl(null);
+
   };
   console.log(burgerRef.current);
 

@@ -37,8 +37,8 @@ export const SidePanelUser = () => {
         <div>
           <Avatar
             className={styles.avatar}
-            alt="Remy Sharp"
-            src="/static/images/avatar/1.jpg"
+            alt={dataMe.fullname}
+            src="blob:https://web.telegram.org/4a157085-52c6-45eb-a74a-d19f8cf0b774"
           />
           <div className={styles.info}>
             <span>{dataMe.fullname}</span>

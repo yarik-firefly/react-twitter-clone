@@ -90,6 +90,8 @@ export const useHomeStyles = makeStyles((theme) => ({
     paddingLeft: 15,
   },
   tweetIconsPost: {
+    marginTop: 20,
+    marginBottom: 5,
     display: "flex",
     justifyContent: "space-between",
   },
@@ -133,10 +135,12 @@ const Home = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const params = useParams();
-  const { tweets, news, statusTweets, statusNews } = useSelector(
+  const { tweets, news, statusTweets, statusOneTweet } = useSelector(
     (state) => state.tweetsSlice
   );
-  const { dataMe, infoUser, infoUserStatus } = useSelector((state) => state.authSlice);
+  const { dataMe, infoUser, infoUserStatus } = useSelector(
+    (state) => state.authSlice
+  );
 
   const id = Object.values(params).toString();
 
@@ -174,12 +178,14 @@ const Home = () => {
                       <ArrowBackIcon />
                     </IconButton>
                     <span style={{ marginLeft: 10 }}>
-                      {pathname === "/home/users/tweets/" + infoUser._id ? (
+                      {pathname === "/home/users/tweets/" + infoUser._id &&
+                      infoUserStatus === "success" ? (
                         <>{infoUser.fullname}</>
-                      ) : pathname === `/home/${id}` && infoUserStatus !== "loading"  ? (
+                      ) : statusOneTweet === "SUCCESS" &&
+                        pathname === `/home/${id}` && infoUserStatus !== "loading" ? (
                         "Твитнуть"
                       ) : (
-                        <Skeleton variant="text" width={131} height={32}/>
+                        <Skeleton variant="text" width={131} height={32} />
                       )}
                     </span>
                   </div>
@@ -208,7 +214,7 @@ const Home = () => {
                 path=""
                 element={
                   <>
-                    <CreateTweet />
+                    <CreateTweet placeholder={"Что у Вас произошло?"} />
 
                     {statusTweets === "SUCCESS" ? (
                       tweets.map((tweet) => <Tweet {...tweet} />)
