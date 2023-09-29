@@ -10,13 +10,13 @@ import { getTweets } from "../../redux/slices/tweetsSlice";
 import format from "date-fns/format";
 import ruLang from "date-fns/locale/ru";
 import { getOneUser } from "../../redux/slices/authSlice";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export const User = () => {
   const [value, setValue] = React.useState(0);
   const { tweets } = useSelector((state) => state.tweetsSlice);
 
-  const { infoUser, infoUserStatus } = useSelector((state) => state.authSlice);
+  const { infoUser, infoUserStatus, dataMe } = useSelector((state) => state.authSlice);
   const dispatch = useDispatch();
   const { id } = useParams();
   const handleChange = (event, newValue) => {
@@ -39,7 +39,7 @@ export const User = () => {
     <div>
       <div className="empty-block"></div>
       <div className="info">
-        <Avatar src="blob:https://web.telegram.org/4a157085-52c6-45eb-a74a-d19f8cf0b774"></Avatar>
+        <Avatar src={infoUser.avatarUrl}></Avatar>
 
         <div className="info__person">
           <h4>{infoUser.fullname}</h4>
@@ -55,7 +55,11 @@ export const User = () => {
           <span>0 Подписчики</span>
         </div>
         <div>
-          <Button variant="contained">Редактировать</Button>
+          <Link to="edit">
+            {dataMe._id === infoUser._id && (
+              <Button variant="contained">Редактировать</Button>
+            )}
+          </Link>
         </div>
       </div>
       <div className="block-tabs">

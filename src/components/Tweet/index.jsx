@@ -31,6 +31,7 @@ const Tweet = ({
   images,
   userPage,
   fullTweet,
+  
 }) => {
   const burgerRef = useRef(null);
   const linkRef = React.useRef(null);

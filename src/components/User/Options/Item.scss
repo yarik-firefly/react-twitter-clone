@@ -1,0 +1,27 @@
+.options-item {
+  transition: all 0.4s ease;
+  border-radius: 20px;
+  cursor: pointer;
+  height: 75px;
+  &:hover {
+    transform: translateY(-10%);
+    position: relative;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0.2), 0 15px 12px rgba(0, 0, 0, 0.2);
+    background-color: #0000000f;
+  }
+  margin: 15px;
+  display: flex;
+  align-items: center;
+  &__icon {
+    align-items: center;
+    margin-left: 10px;
+    display: flex;
+    & .MuiSvgIcon-root {
+      font-size: 40px !important;
+    }
+  }
+  &__text {
+    font-size: 20px;
+    margin-left: 15px;
+  }
+}

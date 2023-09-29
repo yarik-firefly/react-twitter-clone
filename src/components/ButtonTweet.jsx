@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { postTwitt } from "../redux/slices/tweetsSlice";
 import { uploadImage } from "../utils/uploadImage";
 import { createComment } from "../redux/slices/CommentsSlice";
+import { useHomeStyles } from "../pages/Home";
 
 const ButtonTweet = ({
   width,
@@ -21,6 +22,7 @@ const ButtonTweet = ({
   _id,
 }) => {
   const dispatch = useDispatch();
+  const classes = useHomeStyles();
   const onClickButtonHandler = async () => {
     if (placeholder === "Что у Вас произошло?") {
       const urls = [];
@@ -61,8 +63,11 @@ const ButtonTweet = ({
         height: `${height}px`,
         borderRadius: 40,
       }}
+      className={classes.buttonTweet}
     >
-      {placeholder === "Что у Вас произошло?" ? "Твитнуть" : "Ответить"}
+      {placeholder === "Что у Вас произошло?" || sideBtn
+        ? "Твитнуть"
+        : "Ответить"}
     </Button>
   );
 };

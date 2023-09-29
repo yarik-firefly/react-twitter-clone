@@ -37,10 +37,17 @@ import {
 import FullTweet from "../components/FullTweet";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import User from "../components/User/User";
+import EditUser from "../components/User/EditUser";
 
 export const useHomeStyles = makeStyles((theme) => ({
   wrapper: {},
   list: {
+    [theme.breakpoints.down("sm")]: {
+      width: 45,
+      "& svg": {
+        fontSize: "20px !important",
+      },
+    },
     listStyle: "none",
     padding: 0,
     "& li": {
@@ -61,6 +68,26 @@ export const useHomeStyles = makeStyles((theme) => ({
       "& svg": {
         fontSize: 40,
       },
+    },
+  },
+  firstGrid: {
+    [theme.breakpoints.down("sm")]: {
+      width: 50,
+    },
+  },
+  secondGrid: {
+    [theme.breakpoints.down("sm")]: {
+      width: 100,
+    },
+  },
+  thirdGrid: {
+    [theme.breakpoints.down("sm")]: {
+      width: 50,
+    },
+  },
+  buttonTweet: {
+    [theme.breakpoints.only("sm")]: {
+      width: 50,
     },
   },
   input: {
@@ -143,21 +170,30 @@ const Home = () => {
   );
 
   const id = Object.values(params).toString();
+  const spicialId = Object.values(params)[0].split("/")[2];
 
   React.useEffect(() => {
     if (pathname === "/home") {
       dispatch(getTweets());
     }
     // dispatch(getNewsList());
+    // console.log(params.*.split("/"));
   }, [pathname]);
 
   return (
     <Container maxWidth="lg" style={{ height: "100vh" }}>
       <Grid container spacing={2}>
-        <Grid item xs={3} style={{ marginTop: 15 }}>
+        <Grid
+          item
+          sx={{ width: 100, height: 100 }}
+          sm={2}
+          md={3}
+          style={{ marginTop: 15 }}
+          className={classes.firstGrid}
+        >
           <SideMenu />
         </Grid>
-        <Grid item xs={7}>
+        <Grid item xs={2} sm={4} md={7} className={classes.secondGrid}>
           <Paper
             variant="outlined"
             style={{
@@ -178,11 +214,15 @@ const Home = () => {
                       <ArrowBackIcon />
                     </IconButton>
                     <span style={{ marginLeft: 10 }}>
-                      {pathname === "/home/users/tweets/" + infoUser._id &&
-                      infoUserStatus === "success" ? (
+                      {pathname === `/home/users/tweets/${spicialId}/edit` &&
+                      pathname !== "/home/users/tweets/" + infoUser._id ? (
+                        "Настройки"
+                      ) : pathname === "/home/users/tweets/" + infoUser._id &&
+                        infoUserStatus === "success" ? (
                         <>{infoUser.fullname}</>
                       ) : statusOneTweet === "SUCCESS" &&
-                        pathname === `/home/${id}` && infoUserStatus !== "loading" ? (
+                        pathname === `/home/${id}` &&
+                        infoUserStatus !== "loading" ? (
                         "Твитнуть"
                       ) : (
                         <Skeleton variant="text" width={131} height={32} />
@@ -209,6 +249,7 @@ const Home = () => {
             <Routes>
               <Route path="tweet/:id" element={<FullTweet />} />
               <Route path={`users/tweets/:id`} element={<User />} />
+              <Route path={`users/tweets/:id/edit`} element={<EditUser />} />
 
               <Route
                 path=""
@@ -233,7 +274,14 @@ const Home = () => {
             </Routes>
           </Paper>
         </Grid>
-        <Grid item xs={2} style={{ position: "relative", marginTop: 5 }}>
+        <Grid
+          item
+          xs={2}
+          sm={2}
+          md={2}
+          style={{ position: "relative", marginTop: 5 }}
+          className={classes.thirdGrid}
+        >
           <div style={{ position: "sticky", top: 0 }}>
             <SearchIcon
               style={{ position: "absolute", zIndex: 10, top: 20, left: 19 }}

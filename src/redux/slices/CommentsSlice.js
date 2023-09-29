@@ -55,6 +55,8 @@ const commentsSlice = createSlice({
     },
     //====================================================
     [getCommentUnderTweet.pending]: (state) => {
+      state.comments = [];
+
       state.status = "LOADING";
     },
     [getCommentUnderTweet.fulfilled]: (state, action) => {
@@ -62,6 +64,7 @@ const commentsSlice = createSlice({
       state.status = "SUCCESS";
     },
     [getCommentUnderTweet.rejected]: (state) => {
+      state.comments = [];
       state.status = "ERROR";
     },
   },

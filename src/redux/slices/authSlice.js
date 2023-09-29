@@ -10,7 +10,9 @@ export const login = createAsyncThunk(
         password: info.password,
       };
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL || "http://localhost:8888/"}auth/login`,
+        `${
+          process.env.REACT_APP_API_URL || "http://localhost:8888/"
+        }auth/login`,
         infoUser
       );
       console.log(data);
@@ -26,7 +28,9 @@ export const login = createAsyncThunk(
 
 export const getMe = createAsyncThunk("auth/getMe", async (_, { dispatch }) => {
   try {
-    const { data } = await axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:8888/"}users/me`);
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_API_URL || "http://localhost:8888/"}users/me`
+    );
     if (data) {
       dispatch(checkAuth(true));
       return data.data;
@@ -41,8 +45,32 @@ export const getOneUser = createAsyncThunk(
   "auth/getOneUser",
   async (id, { dispatch }) => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:8888/"}users/${id}`);
+      const { data } = await axios.get(
+        `${
+          process.env.REACT_APP_API_URL || "http://localhost:8888/"
+        }users/${id}`
+      );
       return data.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
+
+export const updateAvatar = createAsyncThunk(
+  "user/updateAvatar",
+  async (avatar, { dispatch }) => {
+    const data = {
+      avatar: avatar,
+    };
+    try {
+     await axios.patch(
+        `${
+          process.env.REACT_APP_API_URL || "http://localhost:8888/"
+        }upload/avatar`,
+        data
+      );
+      return avatar;
     } catch (error) {
       console.error(error);
     }
@@ -60,7 +88,12 @@ export const register = createAsyncThunk(
         password: info.password,
         password2: info.password2,
       };
-      await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:8888/"}auth/register`, infoUser);
+      await axios.post(
+        `${
+          process.env.REACT_APP_API_URL || "http://localhost:8888/"
+        }auth/register`,
+        infoUser
+      );
       // dispatch(checkAuth(true));
     } catch (error) {
       dispatch(checkAuth(false));
@@ -157,6 +190,17 @@ const authSlice = createSlice({
     [getOneUser.rejected]: (state) => {
       state.infoUser = [];
       state.infoUserStatus = "error";
+    },
+    //=============================================================
+    [updateAvatar.pending]: (state) => {
+      // state.infoUserStatus = "loading";
+    },
+    [updateAvatar.fulfilled]: (state, action) => {
+      state.dataMe.avatarUrl = action.payload;
+      // state.infoUserStatus = "success";
+    },
+    [updateAvatar.rejected]: (state) => {
+      // state.infoUserStatus = "error";
     },
   },
 });

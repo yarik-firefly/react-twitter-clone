@@ -22,17 +22,14 @@ import BurgerButton from "../BurgerButton/BurgerButton";
 
 export const Comment = ({ none = true, text, user, createdAt }) => {
   return (
-    <Paper
-      variant="outlined"
-      square
-    >
+    <Paper variant="outlined" square>
       <Container maxWidth="lg" style={{ cursor: "default", marginTop: 15 }}>
         <Grid container spacing={3}>
           <Grid item xs={1}>
             <Avatar
               style={{ width: 50, height: 50 }}
-              alt={`Аватар пользователя ${"Gudzon"}`}
-              // src={avatarUrl ? avatarUrl : undefined}
+              alt={` ${user.fullname}`}
+              src={user.avatarUrl}
             />
           </Grid>
           <Grid style={{ paddingLeft: 25 }} item xs={11}>

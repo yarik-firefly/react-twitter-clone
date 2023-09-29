@@ -25,12 +25,6 @@ export const SidePanelUser = () => {
     setAnchorEl(null);
   };
 
-  //   <div>
-  //     <Button aria-controls="simple-menu" aria-haspopup="true">
-  //       Open Menu
-  //     </Button>
-  //   </div>;
-
   return (
     <div style={{ position: "relative" }}>
       <div className={styles.wrapper} onClick={handleClick}>
@@ -38,7 +32,7 @@ export const SidePanelUser = () => {
           <Avatar
             className={styles.avatar}
             alt={dataMe.fullname}
-            src="blob:https://web.telegram.org/4a157085-52c6-45eb-a74a-d19f8cf0b774"
+            src={dataMe.avatarUrl}
           />
           <div className={styles.info}>
             <span>{dataMe.fullname}</span>

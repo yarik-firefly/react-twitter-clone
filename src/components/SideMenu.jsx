@@ -42,7 +42,7 @@ const SideMenu = () => {
           <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
         </g>
       </svg>
-      <ul className={classes.list}>
+      <ul className={classes.list} sm={{width: 100}}>
         <Link style={{ color: "inherit", textDecoration: "none" }} to="/home">
           <li>
             <IconButton aria-label="delete">
@@ -65,38 +65,50 @@ const SideMenu = () => {
           <IconButton>
             <NotificationsNoneIcon />
           </IconButton>
-          <Typography>Уведомления</Typography>
+          <Hidden xsDown>
+            <Typography>Уведомления</Typography>
+          </Hidden>
         </li>
         <li>
           <IconButton>
             <MailOutlineIcon />
           </IconButton>
-          <Typography>Сообщения</Typography>
+          <Hidden xsDown>
+            <Typography>Сообщения</Typography>
+          </Hidden>
         </li>
         <li>
           <IconButton>
             <ListAltIcon />
           </IconButton>
-          <Typography>Список</Typography>
+          <Hidden xsDown>
+            <Typography>Список</Typography>
+          </Hidden>
         </li>
         <li>
           <IconButton>
             <PeopleOutlineIcon />
           </IconButton>
-          <Typography>Сообщество</Typography>
+          <Hidden xsDown>
+            <Typography>Сообщество</Typography>
+          </Hidden>
         </li>
         <li>
           <IconButton>
             <VerifiedUserIcon />
           </IconButton>
-          <Typography>Проверенные</Typography>
+          <Hidden xsDown>
+            <Typography>Проверенные</Typography>
+          </Hidden>
         </li>
         <Link to={`users/tweets/${dataMe?._id}`}>
           <li>
             <IconButton>
               <PersonIcon />
             </IconButton>
-            <Typography>Профиль</Typography>
+            <Hidden xsDown>
+              <Typography>Профиль</Typography>
+            </Hidden>
           </li>
         </Link>
 
@@ -104,7 +116,9 @@ const SideMenu = () => {
           <IconButton>
             <MoreHorizIcon />
           </IconButton>
-          <Typography>Больше</Typography>
+          <Hidden xsDown>
+            <Typography>Больше</Typography>
+          </Hidden>
         </li>
       </ul>
 
