@@ -21,10 +21,10 @@ export const getCommentUnderTweet = createAsyncThunk(
   async (id, { dispatch }) => {
     const { data } = await axios.get(
       `${
-        process.env.REACT_APP_API_URL ||
-        `http://localhost:8888/users/comments/${id}`
-      }`
+        process.env.REACT_APP_API_URL || "http://localhost:8888/"
+      }users/comments/${id}`
     );
+
     return await data.data;
   }
 );
